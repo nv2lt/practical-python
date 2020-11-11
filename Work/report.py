@@ -47,6 +47,9 @@ def make_report(portfolio, prices):
     report = []
     for s in portfolio:
         report.append((s['name'], s['shares'], prices[s['name']], prices[s['name']] - s['price']))
+    return report
+ 
+def print_report(report):
     headers = ('Name', 'Shares', 'Price', 'Change')
     hyphen = '-'
     dollar = '$'
@@ -56,18 +59,17 @@ def make_report(portfolio, prices):
     print(f'{hyphen*10:>10s} {hyphen*10:>10s} {hyphen*10:>10s} {hyphen*10:>10s}')
     for name, shares, price, change in report:
         print(f'{name:>10s} {shares:>10d} {dollar+str(price):>10} {change:10.2f}')
-    return report
  
-
-
 #if len(sys.argv) == 2:
 #    filename = sys.argv[1]
 #else:
 #    filename = 'Data/portfolio.csv'
 
-portfolio = read_portfolio('Data/portfolio.csv')
-prices = read_prices('Data/prices.csv')
-report = make_report(portfolio, prices)
+def portfolio_report(portfolio_filename, prices_filename):
+    portfolio = read_portfolio(portfolio_filename)
+    prices = read_prices(prices_filename)
+    report = make_report(portfolio, prices)
+    print_report(report)
 
 #initial_cost = 0.0
 #current_cost = 0.0
