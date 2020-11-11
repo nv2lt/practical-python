@@ -1,47 +1,24 @@
 # report.py
 #
-# Exercise 2.4
+# Exercise 3.12
 
 import sys
 import csv
+import fileparse
 def read_portfolio(filename):
     '''
     Read a stock portfolio file into a list of dictionaries with keys
     name, shares, and price.
     '''
-    portfolio = []
-    with open(filename, 'rt') as f:
-        rows = csv.reader(f)
-        headers = next(rows)
-        for rowno, row in enumerate(rows):
-            record = dict(zip(headers, row))
-            try:
-                nshares = int(record['shares'])
-                price = float(record['price'])
-                name = record['name']
-            except ValueError:
-                print(f'Row {rowno}: Bad row: {row}')
-            #holding = (row[0], int(row[1]), float(row[2]))
-            #holding = {'name': row[0], 'shares': int(row[1]), 'price': float(row[2])}
-            portfolio.append({'name': name, 'shares': nshares, 'price': price})
+    portfolio = fileparse.parse_csv(filename, select=['name','shares','price'], types=[str,int,float]) 
     return portfolio
 
 def read_prices(filename):
     '''
     Read a CSV file of price data into a dict mapping names to prices.
     '''
-    prices = {}
-    with open(filename, 'r') as f:
-        rows = csv.reader(f)
-        line_number = 0
-        for row in rows:
-            try:
-                line_number += 1
-                prices[row[0]] = float(row[1])
-            except IndexError:
-                #print(f'null value in row {line_number}. It was not added to result')
-                pass
-    return prices
+    pricelist = fileparse.parse_csv(filename, has_headers=False, types=[str,float])
+    return dict(pricelist)
 
 def make_report(portfolio, prices):
     report = []
@@ -60,10 +37,6 @@ def print_report(report):
     for name, shares, price, change in report:
         print(f'{name:>10s} {shares:>10d} {dollar+str(price):>10} {change:10.2f}')
  
-#if len(sys.argv) == 2:
-#    filename = sys.argv[1]
-#else:
-#    filename = 'Data/portfolio.csv'
 
 def portfolio_report(portfolio_filename, prices_filename):
     portfolio = read_portfolio(portfolio_filename)
@@ -71,8 +44,20 @@ def portfolio_report(portfolio_filename, prices_filename):
     report = make_report(portfolio, prices)
     print_report(report)
 
+if len(sys.argv) == 3:
+    portfolio_filename = sys.argv[1]
+    prices_filename = sys.argv[2]
+else:
+    portfolio_filename = 'Data/portfolio.csv'
+    prices_filename = 'Data/prices.csv'
+
+portfolio_report(portfolio_filename, prices_filename)
+
+
+
 #initial_cost = 0.0
 #current_cost = 0.0
+
 #
 #for share_name in portfolio:
 #    initial_cost += share_name['price'] * share_name['shares']
