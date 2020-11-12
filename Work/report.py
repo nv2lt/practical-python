@@ -2,7 +2,6 @@
 #
 # Exercise 3.12
 
-import sys
 import csv
 import fileparse
 def read_portfolio(filename):
@@ -44,32 +43,20 @@ def portfolio_report(portfolio_filename, prices_filename):
     report = make_report(portfolio, prices)
     print_report(report)
 
-if len(sys.argv) == 3:
-    portfolio_filename = sys.argv[1]
-    prices_filename = sys.argv[2]
-else:
-    portfolio_filename = 'Data/portfolio.csv'
-    prices_filename = 'Data/prices.csv'
+def main(argv):
+    import sys
+    if len(sys.argv) == 3:
+        portfolio_filename = sys.argv[1]
+        prices_filename = sys.argv[2]
+    else:
+        portfolio_filename = 'Data/portfolio.csv'
+        prices_filename = 'Data/prices.csv'
 
-portfolio_report(portfolio_filename, prices_filename)
+    portfolio_report(portfolio_filename, prices_filename)
 
 
-
-#initial_cost = 0.0
-#current_cost = 0.0
-
-#
-#for share_name in portfolio:
-#    initial_cost += share_name['price'] * share_name['shares']
-#    current_cost += prices[share_name['name']] * share_name['shares']
-#
-#print(f'Current Value of the portfolio is: {current_cost:0,.2f}')
-#print(f'Initial Value of the portfolio was: {initial_cost:0,.2f}')
-#print(f'Gain is: {(current_cost - initial_cost):0,.2f}')
-#
-
-#for r in report:
-#    print('%10s %10d %10.2f %10.2f' %r)
-
+if __name__ == '__main__':
+    import sys
+    main(sys.argv)
 
 
