@@ -39,7 +39,7 @@ def print_report(reportdata, formatter):
         rowdata = [ name, str(shares), f'{price:0.2f}', f'{change:0.2f}' ]
         formatter.row(rowdata)
 
-def portfolio_report(portfoliofile, pricefile):
+def portfolio_report(portfoliofile, pricefile, fmt='txt'):
     '''
     Make a stock report given portfilio and price data files
     '''
@@ -51,19 +51,21 @@ def portfolio_report(portfoliofile, pricefile):
     report = make_report_data(portfolio, prices)
 
     # Print it out
-    formatter = tableformat.HTMLTableFormatter()
+    formatter = tableformat.create_formatter(fmt)
     print_report(report, formatter)
 
 def main(argv):
     import sys
-    if len(sys.argv) == 3:
+    if len(sys.argv) == 4:
         portfolio_filename = sys.argv[1]
         prices_filename = sys.argv[2]
+        print_format = sys.argv[3]
     else:
         portfolio_filename = 'Data/portfolio.csv'
         prices_filename = 'Data/prices.csv'
+        print_format = 'txt'
 
-    portfolio_report(portfolio_filename, prices_filename)
+    portfolio_report(portfolio_filename, prices_filename, print_format)
 
 
 if __name__ == '__main__':
