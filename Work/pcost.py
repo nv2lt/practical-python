@@ -21,12 +21,13 @@
 import csv
 import sys
 import report
+import stock
 
 def portfolio_cost(filename):
     total_cost = 0.0
     portfolio = report.read_portfolio(filename)
     for record in portfolio:
-        total_cost += record['shares'] * record['price']
+        total_cost += record.shares * record.price
     return total_cost
 
 def main(argv):
